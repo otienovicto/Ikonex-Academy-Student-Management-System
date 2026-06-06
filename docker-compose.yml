@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:5.7
+    container_name: student_management_db
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: student_management
+      MYSQL_USER: student_user
+      MYSQL_PASSWORD: student_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+    networks:
+      - student-management
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: student_management_backend
+    environment:
+      NODE_ENV: production
+      PORT: 5000
+      DATABASE_URL: mysql://student_user:student_password@mysql:3306/student_management
+      JWT_SECRET: your_jwt_secret_key
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mysql
+    networks:
+      - student-management
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: student_management_frontend
+    environment:
+      API_URL: http://localhost:5000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - student-management
+
+volumes:
+  mysql_data:
+
+networks:
+  student-management:
+    driver: bridge
