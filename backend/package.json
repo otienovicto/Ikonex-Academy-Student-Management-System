@@ -1,16 +1,26 @@
 {
   "name": "student-management-backend",
   "version": "1.0.0",
-  "description": "Student Management System Backend",
+  "description": "Student Management System Backend API for Ikonex Academy",
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
     "test": "jest",
-    "db:check": "node scripts/check-db.js"
+    "db:check": "node scripts/check-db.js",
+    "postinstall": "echo \"Dependencies installed successfully\""
   },
-  "keywords": [],
-  "author": "",
+  "engines": {
+    "node": ">=18.x"
+  },
+  "keywords": [
+    "student-management",
+    "express",
+    "postgresql",
+    "api",
+    "education-system"
+  ],
+  "author": "Victor Otieno",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
